@@ -1,0 +1,189 @@
+/* StudentInfo.css */
+.student-container {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding: 20px;
+    padding-top: 80px; /* Space for fixed navbar */
+    color: #333;
+  }
+  
+  .student-container h2 {
+    color: #1a2980;
+    font-size: 28px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .student-form {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    border-left: 4px solid #1a2980;
+    position: relative;
+  }
+  
+  .student-form:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: #1a2980;
+  }
+  
+  .student-form input {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+  }
+  
+  .student-form input:focus {
+    border-color: #1a2980;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 41, 128, 0.25);
+  }
+  
+  .student-form button {
+    grid-column: 3;
+    background-color: #1a2980;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .student-form button:hover {
+    background-color: #161f67;
+  }
+  
+  .student-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .dept-batch-group {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    border-left: 4px solid #1a2980;
+    position: relative;
+  }
+  
+  .dept-batch-group:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: #1a2980;
+  }
+  
+  .dept-batch-group h3 {
+    color: #1a2980;
+    font-size: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .dept-batch-group table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .dept-batch-group th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  
+  .dept-batch-group td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .dept-batch-group tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .dept-batch-group tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .dept-batch-group button {
+    background-color: #1a2980;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .dept-batch-group button:hover {
+    background-color: #161f67;
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 992px) {
+    .student-form {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .student-form button {
+      grid-column: 2;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .student-form {
+      grid-template-columns: 1fr;
+    }
+    
+    .student-form button {
+      grid-column: 1;
+    }
+    
+    .dept-batch-group {
+      overflow-x: auto;
+    }
+    
+    .dept-batch-group table {
+      min-width: 800px;
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .student-container {
+      padding: 15px;
+      padding-top: 70px;
+    }
+    
+    .student-container h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    
+    .student-form {
+      padding: 20px;
+    }
+  }

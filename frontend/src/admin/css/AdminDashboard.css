@@ -1,0 +1,147 @@
+/* Admin.css */
+.admin-container {
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 20px;
+  padding-top: 80px; /* Space for fixed navbar */
+  color: #333;
+}
+
+.admin-container h2 {
+  color: #1a2980;
+  font-size: 28px;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-folders {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.folder {
+  background: white;
+  height: 180px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.folder:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+}
+
+.folder span {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 15px;
+  color: #333;
+  z-index: 1;
+}
+
+/* Icons for folders */
+.folder:after {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-size: 60px;
+  color: rgba(26, 41, 128, 0.1);
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+}
+
+/* Specific folder styling */
+.student-info {
+  border-left: 4px solid #4e73df;
+}
+
+.student-info:before {
+  background-color: #4e73df;
+}
+
+.student-info:after {
+  content: '\f501'; /* User graduate icon */
+}
+
+.faculty-info {
+  border-left: 4px solid #1cc88a;
+}
+
+.faculty-info:before {
+  background-color: #1cc88a;
+}
+
+.faculty-info:after {
+  content: '\f51c'; /* Chalkboard teacher icon */
+}
+
+.course-details {
+  border-left: 4px solid #f6c23e;
+}
+
+.course-details:before {
+  background-color: #f6c23e;
+}
+
+.course-details:after {
+  content: '\f5da'; /* Book icon */
+}
+
+.report {
+  border-left: 4px solid #e74a3b;
+}
+
+.report:before {
+  background-color: #e74a3b;
+}
+
+.report:after {
+  content: '\f080'; /* Chart bar icon */
+}
+
+/* Hover effects */
+.folder:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .admin-folders {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .admin-folders {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin-container {
+    padding: 15px;
+    padding-top: 70px;
+  }
+  
+  .admin-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+}

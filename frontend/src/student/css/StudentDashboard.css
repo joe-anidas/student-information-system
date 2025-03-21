@@ -1,0 +1,77 @@
+.student-container {
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+}
+
+.student-form input {
+  margin: 5px;
+  padding: 6px;
+  font-size: 14px;
+}
+
+.student-form button {
+  padding: 9px 20px;
+  font-size: 14px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.student-form button:hover {
+  background-color: #45a049;
+}
+
+.student-list {
+  margin-top: 20px;
+}
+
+.dept-batch-group {
+  margin-bottom: 20px;
+}
+
+.dept-batch-group h3 {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+button {
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #d32f2f;
+}
