@@ -1,0 +1,16 @@
+{
+    "name": "student-information-system",
+    "private": true,
+    "workspaces": [
+      "backend",
+      "frontend"
+    ],
+    "scripts": {
+      "install": "npm install --workspaces",
+      "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev --workspace=client\""
+    },
+    "devDependencies": {
+      "concurrently": "^8.2.2"
+    }
+  }
+  
