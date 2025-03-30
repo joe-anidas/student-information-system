@@ -24,21 +24,26 @@ cd student-information-system
 cd backend
 npm install
 ```
-- Configure MongoDB connection in `.env` file:
+- Configure MongoDB connection in a `.env` file:
   ```env
   PORT=5000
   MONGODB_URI=mongodb://localhost:27017/sis
   ```
 - Start the backend server:
   ```bash
-  npm run dev
+  node server.js
   ```
+  (Ensure MongoDB is running locally or provide a valid MongoDB Atlas connection string.)
 
 ### 3. Frontend Setup (React + Vite)
 ```bash
 cd ../frontend
 npm install
 ```
+- Configure API base URL in a `.env` file:
+  ```env
+  VITE_API_BASE_URL=http://localhost:5000
+  ```
 - Start the frontend development server:
   ```bash
   npm run dev
@@ -49,7 +54,7 @@ npm install
 ## Running the Full Stack Application
 ### **Start Backend**
 ```bash
-cd backend && npm run dev
+cd backend && node server.js
 ```
 ### **Start Frontend**
 ```bash
@@ -74,6 +79,7 @@ cd frontend && npm run dev
 │   ├── public/       # Static assets
 │   ├── main.jsx      # React entry file
 │   ├── App.jsx       # App structure
+│   ├── .env          # Environment variables
 │
 │── .gitignore        # Ignore node_modules & sensitive files
 │── package.json      # Project dependencies
@@ -84,17 +90,8 @@ cd frontend && npm run dev
 
 ## Technologies Used
 - **Frontend:** React (Vite), React Router, Axios
-- **Backend:** Express.js, MongoDB, Node.js, CORS
+- **Backend:** Express.js, MongoDB, Node.js, CORS, dotenv
 - **Database:** MongoDB Atlas (or local MongoDB)
-
----
-
-## Contributing
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -m "Added feature X"`).
-4. Push to your branch (`git push origin feature-name`).
-5. Open a pull request.
 
 ---
 
