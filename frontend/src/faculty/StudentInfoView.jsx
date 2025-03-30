@@ -12,7 +12,7 @@ function StudentInfoView() {
 
   const fetchStudents = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/students');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/students`);
       setStudents(response.data);
     } catch (error) {
       console.error('Error fetching students:', error);
@@ -35,9 +35,6 @@ function StudentInfoView() {
   return (
     <div className="student-container">
       <Navbar />
-      <br></br>
-      <br></br>
-      <br></br>
       <h2>Student Details</h2>
       <div className="student-list">
         {Object.keys(groupedStudents).map((key) => (

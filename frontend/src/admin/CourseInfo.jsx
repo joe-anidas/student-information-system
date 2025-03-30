@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './css/CourseDetails.css';
-import Navbar from './Navbar';
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./css/CourseDetails.css";
+import Navbar from "./Navbar";
 
 function CourseDetails() {
   const [courses, setCourses] = useState([]);
-  const [courseId, setCourseId] = useState('');
-  const [course, setCourse] = useState('');
-  const [credits, setCredits] = useState('');
-  const [department, setDepartment] = useState('');
+  const [courseId, setCourseId] = useState("");
+  const [course, setCourse] = useState("");
+  const [credits, setCredits] = useState("");
+  const [department, setDepartment] = useState("");
+
+  // Use import.meta.env for environment variables in Vite
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     fetchCourses();
@@ -17,34 +19,33 @@ function CourseDetails() {
 
   const fetchCourses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/courses');
+      const response = await axios.get(`${API_BASE_URL}/courses`);
       setCourses(response.data);
     } catch (error) {
-      console.error('Error fetching courses:', error);
+      console.error("Error fetching courses:", error);
     }
   };
 
   const addCourse = async () => {
     const newCourse = { courseId, course, credits: Number(credits), department };
     try {
-      const response = await axios.post('http://localhost:5000/courses', newCourse);
-      console.log('Course added:', response.data);
+      await axios.post(`${API_BASE_URL}/courses`, newCourse);
       fetchCourses();
-      setCourseId('');
-      setCourse('');
-      setCredits('');
-      setDepartment('');
+      setCourseId("");
+      setCourse("");
+      setCredits("");
+      setDepartment("");
     } catch (error) {
-      console.error('Error adding course:', error);
+      console.error("Error adding course:", error);
     }
   };
 
   const deleteCourse = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/courses/${id}`);
+      await axios.delete(`${API_BASE_URL}/courses/${id}`);
       fetchCourses();
     } catch (error) {
-      console.error('Error deleting course:', error);
+      console.error("Error deleting course:", error);
     }
   };
 
@@ -66,30 +67,10 @@ function CourseDetails() {
       <Navbar />
       <h2>Course Details</h2>
       <div className="course-form">
-        <input
-          type="text"
-          placeholder="Course ID"
-          value={courseId}
-          onChange={(e) => setCourseId(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Course"
-          value={course}
-          onChange={(e) => setCourse(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Credits"
-          value={credits}
-          onChange={(e) => setCredits(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Department"
-          value={department}
-          onChange={(e) => setDepartment(e.target.value)}
-        />
+        <input type="text" placeholder="Course ID" value={courseId} onChange={(e) => setCourseId(e.target.value)} />
+        <input type="text" placeholder="Course" value={course} onChange={(e) => setCourse(e.target.value)} />
+        <input type="number" placeholder="Credits" value={credits} onChange={(e) => setCredits(e.target.value)} />
+        <input type="text" placeholder="Department" value={department} onChange={(e) => setDepartment(e.target.value)} />
         <button onClick={addCourse}>Add Course</button>
       </div>
       <div className="course-list">

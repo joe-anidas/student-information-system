@@ -5,6 +5,8 @@ import Navbar from './Navbar';
 
 function ReportView() {
   const [marks, setMarks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchMarks();
@@ -12,10 +14,14 @@ function ReportView() {
 
   const fetchMarks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/marks');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/marks`);
       setMarks(response.data);
+      setError('');
     } catch (error) {
       console.error('Error fetching marks:', error);
+      setError('Failed to load marks. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,16 +42,21 @@ function ReportView() {
     <div className="report-container">
       <Navbar />
       <h2>Report</h2>
+
+      {loading && <p>Loading marks...</p>}
+      {error && <p className="error-message">{error}</p>}
+
       <div className="marks-list">
+        {Object.keys(groupedMarks).length === 0 && !loading && <p>No marks available.</p>}
+
         {Object.keys(groupedMarks).map((key) => (
           <div key={key} className="dept-group">
-            <h3>{key}</h3>
+            <h3>{key} Department</h3>
             <table>
               <thead>
                 <tr>
                   <th>Register Number</th>
                   <th>Course</th>
-                  <th>Department</th>
                   <th>Internal Marks</th>
                   <th>Semester Marks</th>
                   <th>Total Marks</th>
@@ -57,7 +68,6 @@ function ReportView() {
                   <tr key={mark._id}>
                     <td>{mark.registerNumber}</td>
                     <td>{mark.course}</td>
-                    <td>{mark.dept}</td>
                     <td>{mark.internalMarks}</td>
                     <td>{mark.semesterMarks}</td>
                     <td>{mark.totalMarks}</td>

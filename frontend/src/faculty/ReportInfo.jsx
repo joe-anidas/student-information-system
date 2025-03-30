@@ -5,11 +5,11 @@ import Navbar from './Navbar';
 
 function ReportInfo() {
   const [marks, setMarks] = useState([]);
-  const [registerNumber, setRegisterNumber] = useState('1001');
-  const [course, setCourse] = useState('OOSE');
-  const [internalMarks, setInternalMarks] = useState('40');
-  const [semesterMarks, setSemesterMarks] = useState('60');
-  const [dept, setDept] = useState('IT');
+  const [registerNumber, setRegisterNumber] = useState('');
+  const [course, setCourse] = useState('');
+  const [internalMarks, setInternalMarks] = useState('');
+  const [semesterMarks, setSemesterMarks] = useState('');
+  const [dept, setDept] = useState('');
 
   useEffect(() => {
     fetchMarks();
@@ -17,7 +17,7 @@ function ReportInfo() {
 
   const fetchMarks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/marks');
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/marks`);
       setMarks(response.data);
     } catch (error) {
       console.error('Error fetching marks:', error);
@@ -34,18 +34,8 @@ function ReportInfo() {
       else if (totalMarks >= 60) grade = 'B+';
       else if (totalMarks >= 50) grade = 'B';
 
-      const newMarks = {
-        registerNumber,
-        course,
-        dept,
-        internalMarks: Number(internalMarks),
-        semesterMarks: Number(semesterMarks),
-        totalMarks,
-        grade,
-      };
-
-      const addMarksResponse = await axios.post('http://localhost:5000/marks', newMarks);
-      console.log('Marks added:', addMarksResponse.data);
+      const newMarks = { registerNumber, course, dept, internalMarks: Number(internalMarks), semesterMarks: Number(semesterMarks), totalMarks, grade };
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/marks`, newMarks);
       fetchMarks();
       setRegisterNumber('');
       setCourse('');
@@ -59,61 +49,29 @@ function ReportInfo() {
 
   const deleteMarks = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/marks/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/marks/${id}`);
       fetchMarks();
     } catch (error) {
       console.error('Error deleting marks:', error);
     }
   };
 
-  const groupByDept = (marks) => {
-    return marks.reduce((groups, mark) => {
-      const key = mark.dept;
-      if (!groups[key]) {
-        groups[key] = [];
-      }
-      groups[key].push(mark);
-      return groups;
-    }, {});
-  };
-
-  const groupedMarks = groupByDept(marks);
+  const groupedMarks = marks.reduce((groups, mark) => {
+    if (!groups[mark.dept]) groups[mark.dept] = [];
+    groups[mark.dept].push(mark);
+    return groups;
+  }, {});
 
   return (
     <div className="report-container">
       <Navbar />
       <h2>Report</h2>
       <div className="marks-form">
-        <input
-          type="text"
-          placeholder="Register Number"
-          value={registerNumber}
-          onChange={(e) => setRegisterNumber(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Course"
-          value={course}
-          onChange={(e) => setCourse(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Department"
-          value={dept}
-          onChange={(e) => setDept(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Internal Marks"
-          value={internalMarks}
-          onChange={(e) => setInternalMarks(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Semester Marks"
-          value={semesterMarks}
-          onChange={(e) => setSemesterMarks(e.target.value)}
-        />
+        <input type="text" placeholder="Register Number" value={registerNumber} onChange={(e) => setRegisterNumber(e.target.value)} />
+        <input type="text" placeholder="Course" value={course} onChange={(e) => setCourse(e.target.value)} />
+        <input type="text" placeholder="Department" value={dept} onChange={(e) => setDept(e.target.value)} />
+        <input type="number" placeholder="Internal Marks" value={internalMarks} onChange={(e) => setInternalMarks(e.target.value)} />
+        <input type="number" placeholder="Semester Marks" value={semesterMarks} onChange={(e) => setSemesterMarks(e.target.value)} />
         <button onClick={addMarks}>Add Marks</button>
       </div>
       <div className="marks-list">

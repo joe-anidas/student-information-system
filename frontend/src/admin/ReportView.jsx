@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './css/ReportInfo.css';
-import Navbar from './Navbar';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./css/ReportInfo.css";
+import Navbar from "./Navbar";
 
 function ReportView() {
   const [marks, setMarks] = useState([]);
+
+  // Use import.meta.env for environment variables in Vite
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     fetchMarks();
@@ -12,10 +15,10 @@ function ReportView() {
 
   const fetchMarks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/marks');
+      const response = await axios.get(`${API_BASE_URL}/marks`);
       setMarks(response.data);
     } catch (error) {
-      console.error('Error fetching marks:', error);
+      console.error("Error fetching marks:", error);
     }
   };
 
@@ -35,6 +38,7 @@ function ReportView() {
   return (
     <div className="report-container">
       <Navbar />
+      <br /><br /><br />
       <h2>Report</h2>
       <div className="marks-list">
         {Object.keys(groupedMarks).map((key) => (
@@ -53,17 +57,19 @@ function ReportView() {
                 </tr>
               </thead>
               <tbody>
-                {groupedMarks[key].map((mark) => (
-                  <tr key={mark._id}>
-                    <td>{mark.registerNumber}</td>
-                    <td>{mark.course}</td>
-                    <td>{mark.dept}</td>
-                    <td>{mark.internalMarks}</td>
-                    <td>{mark.semesterMarks}</td>
-                    <td>{mark.totalMarks}</td>
-                    <td>{mark.grade}</td>
-                  </tr>
-                ))}
+                {groupedMarks[key]
+                  .sort((a, b) => a.registerNumber.localeCompare(b.registerNumber))
+                  .map((mark) => (
+                    <tr key={mark._id}>
+                      <td>{mark.registerNumber}</td>
+                      <td>{mark.course}</td>
+                      <td>{mark.dept}</td>
+                      <td>{mark.internalMarks}</td>
+                      <td>{mark.semesterMarks}</td>
+                      <td>{mark.totalMarks}</td>
+                      <td>{mark.grade}</td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
