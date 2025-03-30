@@ -1,0 +1,47 @@
+# Node Modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log*
+
+# Build files
+dist/
+build/
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Editor & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs
+*.log
+debug.log
+npm-debug.log
+yarn-debug.log
+pnpm-debug.log
+lerna-debug.log
+.log
+output.log
+
+# React-specific
+.cache/
+public/*.map
+coverage/
+jest/
+cypress/videos/
+cypress/screenshots/
