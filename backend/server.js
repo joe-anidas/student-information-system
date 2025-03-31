@@ -10,8 +10,6 @@ const marksRoutes = require('./routes/marks');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-const cors = require("cors");
 
 // Allow both local development and deployed frontend on Vercel
 const allowedOrigins = [
