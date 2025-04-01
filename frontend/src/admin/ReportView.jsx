@@ -38,7 +38,7 @@ function ReportView() {
   return (
     <div className="report-container">
       <Navbar />
-      <br /><br /><br />
+
       <h2>Report</h2>
       <div className="marks-list">
         {Object.keys(groupedMarks).map((key) => (

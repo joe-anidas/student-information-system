@@ -69,7 +69,7 @@ function StudentInfo() {
   return (
     <div className="student-container">
       <Navbar />
-      <br /><br /><br />
+      
       <h2>Student Details</h2>
       <div className="student-form">
         <input type="text" placeholder="Register Number" value={registerNumber} onChange={(e) => setRegisterNumber(e.target.value)} />

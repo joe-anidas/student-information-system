@@ -65,7 +65,6 @@ function CourseDetails() {
   return (
     <div className="course-container">
       <Navbar />
-      <br /><br /><br />
       <h2>Course Details</h2>
       <div className="course-form">
         <input type="text" placeholder="Course ID" value={courseId} onChange={(e) => setCourseId(e.target.value)} />

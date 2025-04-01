@@ -64,7 +64,7 @@ function FacultyInfo() {
   return (
     <div className="faculty-container">
       <Navbar />
-      <br /><br /><br />
+
       <h2>Faculty Information</h2>
       <div className="faculty-form">
         <input type="text" placeholder="Staff ID" value={staffId} onChange={(e) => setStaffId(e.target.value)} />
