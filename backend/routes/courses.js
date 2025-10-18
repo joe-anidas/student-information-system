@@ -1,9 +1,11 @@
-const express = require('express');
-const { ObjectId } = require('mongodb');
-const client = require('../config/db');
+import express from 'express';
+import { ObjectId } from 'mongodb';
+import client from '../config/db.js';
+import { requireRole } from '../middleware/auth.js';
 
 const router = express.Router();
 
+// Get all courses - All authenticated users can view
 router.get('/', async (req, res) => {
   try {
     await client.connect();
@@ -17,7 +19,26 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+// Get specific course - All authenticated users can view
+router.get('/:id', async (req, res) => {
+  try {
+    const courseId = req.params.id;
+    await client.connect();
+    const course = await client.db("sis").collection("courses").findOne({ _id: new ObjectId(courseId) });
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    res.json(course);
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    res.status(500).json({ message: 'Error fetching course', error });
+  } finally {
+    await client.close();
+  }
+});
+
+// Add new course - Admin and Faculty can add
+router.post('/', requireRole(['admin', 'faculty']), async (req, res) => {
   try {
     await client.connect();
     const newCourse = req.body;
@@ -31,7 +52,24 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+// Update course - Admin and Faculty can update
+router.put('/:id', requireRole(['admin', 'faculty']), async (req, res) => {
+  try {
+    await client.connect();
+    const courseId = req.params.id;
+    const updatedCourse = req.body;
+    await client.db("sis").collection("courses").updateOne({ _id: new ObjectId(courseId) }, { $set: updatedCourse });
+    res.json({ message: 'Course updated' });
+  } catch (error) {
+    console.error('Error updating course:', error);
+    res.status(500).json({ message: 'Error updating course', error });
+  } finally {
+    await client.close();
+  }
+});
+
+// Delete course - Admin and Faculty can delete
+router.delete('/:id', requireRole(['admin', 'faculty']), async (req, res) => {
   try {
     await client.connect();
     const courseId = req.params.id;
@@ -45,4 +83,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

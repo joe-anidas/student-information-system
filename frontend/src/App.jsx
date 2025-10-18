@@ -1,44 +1,110 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './login/Login';
+import LandingPage from './pages/LandingPage';
+import Logout from './pages/auth/LogoutLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 
-import Admin from './admin/AdminDashboard';
-import FacultyInfo from './admin/FacultyInfo';
-import StudentInfo from './admin/StudentInfo';
-import CourseInfo from './admin/CourseInfo';
-import ReportView from './admin/ReportView';
+// Admin Components
+import AdminDashboard from './pages/admin/AdminDashboard';
+import UserManagement from './pages/admin/UserManagement';
+import FacultyInfo from './pages/admin/FacultyInfo';
+import StudentInfo from './pages/admin/StudentInfo';
+import CourseInfo from './pages/admin/CourseInfo';
+import ReportView from './pages/admin/ReportView';
 
-import Faculty from './faculty/FacultyDashboard';
-import ReportInfo from './faculty/ReportInfo';
-import CourseDetails from './faculty/CourseDetails';
-import StudentInfoView from './faculty/StudentInfoView';
+// Faculty Components
+import FacultyDashboard from './pages/faculty/FacultyDashboard';
+import ReportInfo from './pages/faculty/ReportInfo';
+import CourseDetails from './pages/faculty/CourseDetails';
+import StudentInfoView from './pages/faculty/StudentInfoView';
 
-
-import Student from './student/StudentDashboard';
-import StudentView from './student/StudentView';
-import CourseView from './student/CourseView';
-import Report from './student/ReportView';
-
+// Student Components
+import StudentDashboard from './pages/student/StudentDashboard';
+import StudentView from './pages/student/StudentView';
+import CourseView from './pages/student/CourseView';
+import Report from './pages/student/ReportView';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/logout" element={<Logout />} />
 
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/faculty" element={<Faculty />} />
-        <Route path="/student" element={<Student />} />
-        <Route path="/student-info-view" element={<StudentInfoView />} />
-        <Route path="/student-info" element={<StudentInfo />} />
-        <Route path="/faculty-info" element={<FacultyInfo />} />
-        <Route path="/course-info" element={<CourseInfo />} />
-        <Route path="/report-info" element={<ReportInfo />} />
-        <Route path="/course-details" element={<CourseDetails />} />
-        <Route path="/student-view" element={<StudentView />} />
-      
-        <Route path="/course-view" element={<CourseView />} />
-        <Route path="/report-view" element={<ReportView />} />
-        <Route path="/report" element={<Report />} />
+        {/* Admin Routes */}
+        <Route path="/admin" element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/users" element={
+          <ProtectedRoute requiredRole="admin">
+            <UserManagement />
+          </ProtectedRoute>
+        } />
+        <Route path="/student-info" element={
+          <ProtectedRoute requiredRole="admin">
+            <StudentInfo />
+          </ProtectedRoute>
+        } />
+        <Route path="/faculty-info" element={
+          <ProtectedRoute requiredRole="admin">
+            <FacultyInfo />
+          </ProtectedRoute>
+        } />
+        <Route path="/course-info" element={
+          <ProtectedRoute requiredRole="admin">
+            <CourseInfo />
+          </ProtectedRoute>
+        } />
+        <Route path="/report-view" element={
+          <ProtectedRoute requiredRole="admin">
+            <ReportView />
+          </ProtectedRoute>
+        } />
+
+        {/* Faculty Routes */}
+        <Route path="/faculty" element={
+          <ProtectedRoute requiredRole="faculty">
+            <FacultyDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/student-info-view" element={
+          <ProtectedRoute requiredRole="faculty">
+            <StudentInfoView />
+          </ProtectedRoute>
+        } />
+        <Route path="/report-info" element={
+          <ProtectedRoute requiredRole="faculty">
+            <ReportInfo />
+          </ProtectedRoute>
+        } />
+        <Route path="/course-details" element={
+          <ProtectedRoute requiredRole="faculty">
+            <CourseDetails />
+          </ProtectedRoute>
+        } />
+
+        {/* Student Routes */}
+        <Route path="/student" element={
+          <ProtectedRoute requiredRole="student">
+            <StudentDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/student-view" element={
+          <ProtectedRoute requiredRole="student">
+            <StudentView />
+          </ProtectedRoute>
+        } />
+        <Route path="/course-view" element={
+          <ProtectedRoute requiredRole="student">
+            <CourseView />
+          </ProtectedRoute>
+        } />
+        <Route path="/report" element={
+          <ProtectedRoute requiredRole="student">
+            <Report />
+          </ProtectedRoute>
+        } />
       </Routes>
     </Router>
   );

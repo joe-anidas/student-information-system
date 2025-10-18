@@ -1,10 +1,12 @@
-const express = require('express');
-const { ObjectId } = require('mongodb');
-const client = require('../config/db');
+import express from 'express';
+import { ObjectId } from 'mongodb';
+import client from '../config/db.js';
+import { requireRole } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+// Get all students - Admin and Faculty can view
+router.get('/', requireRole(['admin', 'faculty']), async (req, res) => {
   try {
     await client.connect();
     const students = await client.db("sis").collection("students").find().toArray();
@@ -17,7 +19,34 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+// Get specific student - Admin, Faculty, and Student (own profile)
+router.get('/:id', async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const userRole = req.user.role;
+    const userStudentId = req.user.studentId;
+    
+    // Students can only view their own profile
+    if (userRole === 'student' && userStudentId !== studentId) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    
+    await client.connect();
+    const student = await client.db("sis").collection("students").findOne({ _id: new ObjectId(studentId) });
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    res.json(student);
+  } catch (error) {
+    console.error('Error fetching student:', error);
+    res.status(500).json({ message: 'Error fetching student', error });
+  } finally {
+    await client.close();
+  }
+});
+
+// Add new student - Admin only
+router.post('/', requireRole(['admin']), async (req, res) => {
   try {
     await client.connect();
     const newStudent = req.body;
@@ -31,7 +60,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+// Update student - Admin only
+router.put('/:id', requireRole(['admin']), async (req, res) => {
   try {
     await client.connect();
     const studentId = req.params.id;
@@ -46,7 +76,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+// Delete student - Admin only
+router.delete('/:id', requireRole(['admin']), async (req, res) => {
   try {
     await client.connect();
     const studentId = req.params.id;
@@ -60,4 +91,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,9 +1,7 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-require('dotenv').config();
+import { MongoClient, ServerApiVersion } from 'mongodb';
+import { MONGO_URI } from './env.js';
 
-// const uri = process.env.LOCAL_MONGODB_URI || process.env.MONGODB_URI;
-const uri = process.env.MONGODB_URI; 
-const client = new MongoClient(uri, {
+const client = new MongoClient(MONGO_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -11,4 +9,4 @@ const client = new MongoClient(uri, {
   }
 });
 
-module.exports = client;
+export default client;

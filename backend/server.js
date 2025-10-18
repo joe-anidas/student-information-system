@@ -1,46 +1,68 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
-
-const studentRoutes = require('./routes/students');
-const facultyRoutes = require('./routes/faculty');
-const courseRoutes = require('./routes/courses');
-const marksRoutes = require('./routes/marks');
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import { PORT, MONGO_URI, CORS_ORIGIN } from './config/env.js';
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/users.js';
+import departmentRoutes from './routes/departments.js';
+import subjectRoutes from './routes/subjects.js';
+import attendanceRoutes from './routes/attendance.js';
+import scoreRoutes from './routes/scores.js';
+import { authenticateToken, requireRole } from './middleware/auth.js';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-const path = require("path");
+// MongoDB connection
+mongoose
+  .connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-app.get('/favicon.ico', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'favicon.ico'));
+// CORS configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || CORS_ORIGIN.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+
+// Health check
+app.get('/', (req, res) => {
+  res.json({ 
+    status: "ok", 
+    service: "AcademIQ Student Information System Backend",
+    version: "1.0.0",
+    endpoints: {
+      auth: "/auth",
+      users: "/users",
+      departments: "/departments", 
+      subjects: "/subjects",
+      attendance: "/attendance",
+      scores: "/scores"
+    }
+  });
 });
 
-// Allow both local development and deployed frontend on Vercel
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://student-information-system-dun.vercel.app",
-];
+// Auth routes (public)
+app.use('/auth', authRoutes);
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
-
-// Routes
-app.use('/students', studentRoutes);
-app.use('/faculty', facultyRoutes);
-app.use('/courses', courseRoutes);
-app.use('/marks', marksRoutes);
+// Protected routes
+app.use('/users', userRoutes);
+app.use('/departments', departmentRoutes);
+app.use('/subjects', subjectRoutes);
+app.use('/attendance', attendanceRoutes);
+app.use('/scores', scoreRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 AcademIQ Backend Server is running on http://localhost:${PORT}`);
+  console.log(`📊 API Endpoints available at http://localhost:${PORT}`);
 });
