@@ -4,9 +4,15 @@ import { dataAPI } from '../../lib/api';
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+  const [filters, setFilters] = useState({
+    role: '',
+    department: '',
+    year: ''
+  });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,12 +38,35 @@ function UserManagement() {
     try {
       const data = await dataAPI.getUsers();
       setUsers(data);
+      setFilteredUsers(data);
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);
     }
   };
+
+  const applyFilters = () => {
+    let filtered = users;
+    
+    if (filters.role) {
+      filtered = filtered.filter(user => user.role === filters.role);
+    }
+    
+    if (filters.department) {
+      filtered = filtered.filter(user => user.department === filters.department);
+    }
+    
+    if (filters.year && filters.role === 'student') {
+      filtered = filtered.filter(user => user.year?.toString() === filters.year);
+    }
+    
+    setFilteredUsers(filtered);
+  };
+
+  useEffect(() => {
+    applyFilters();
+  }, [filters, users]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,6 +152,57 @@ function UserManagement() {
             >
               Add New User
             </button>
+          </div>
+
+          {/* Filters */}
+          <div className="bg-white rounded-lg shadow p-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <select
+                value={filters.role}
+                onChange={(e) => setFilters({...filters, role: e.target.value})}
+                className="p-2 border rounded-lg"
+              >
+                <option value="">All Roles</option>
+                <option value="student">Students</option>
+                <option value="faculty">Faculty</option>
+                <option value="admin">Admin</option>
+              </select>
+              
+              <select
+                value={filters.department}
+                onChange={(e) => setFilters({...filters, department: e.target.value})}
+                className="p-2 border rounded-lg"
+                disabled={filters.role === 'admin'}
+              >
+                <option value="">All Departments</option>
+                <option value="Computer Science Engineering">CSE</option>
+                <option value="Information Technology">IT</option>
+                <option value="Electronics and Communication Engineering">ECE</option>
+                <option value="Electrical and Electronics Engineering">EEE</option>
+                <option value="Mechanical Engineering">MECH</option>
+                <option value="Artificial Intelligence and Data Science">AIDS</option>
+              </select>
+              
+              <select
+                value={filters.year}
+                onChange={(e) => setFilters({...filters, year: e.target.value})}
+                className="p-2 border rounded-lg"
+                disabled={filters.role === 'faculty' || filters.role === 'admin'}
+              >
+                <option value="">All Years</option>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+              </select>
+              
+              <button
+                onClick={() => setFilters({ role: '', department: '', year: '' })}
+                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Clear Filters
+              </button>
+            </div>
           </div>
 
           {/* User Form Modal */}
@@ -287,7 +367,7 @@ function UserManagement() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {users.map((user) => (
+                {filteredUsers.map((user) => (
                   <tr key={user._id}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {user.name}
@@ -308,7 +388,7 @@ function UserManagement() {
                       {user.department}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {user.year || '-'}
+                      {user.role === 'faculty' ? '-' : (user.year || '-')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button

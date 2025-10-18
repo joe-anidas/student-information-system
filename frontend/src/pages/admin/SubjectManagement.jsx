@@ -4,11 +4,18 @@ import { dataAPI } from '../../lib/api';
 
 function SubjectManagement() {
   const [subjects, setSubjects] = useState([]);
+  const [filteredSubjects, setFilteredSubjects] = useState([]);
   const [faculty, setFaculty] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingSubject, setEditingSubject] = useState(null);
+  const [filters, setFilters] = useState({
+    department: '',
+    facultyId: '',
+    semester: '',
+    credits: ''
+  });
   const [formData, setFormData] = useState({
     name: '',
     code: '',
@@ -31,6 +38,7 @@ function SubjectManagement() {
         dataAPI.getDepartments()
       ]);
       setSubjects(subjectsData);
+      setFilteredSubjects(subjectsData);
       setFaculty(facultyData);
       setDepartments(departmentsData);
     } catch (error) {
@@ -65,6 +73,32 @@ function SubjectManagement() {
       }
     }
   };
+
+  const applyFilters = () => {
+    let filtered = subjects;
+    
+    if (filters.department) {
+      filtered = filtered.filter(subject => subject.department === filters.department);
+    }
+    
+    if (filters.facultyId) {
+      filtered = filtered.filter(subject => subject.facultyId?._id === filters.facultyId);
+    }
+    
+    if (filters.semester) {
+      filtered = filtered.filter(subject => subject.semester.toString() === filters.semester);
+    }
+    
+    if (filters.credits) {
+      filtered = filtered.filter(subject => subject.credits.toString() === filters.credits);
+    }
+    
+    setFilteredSubjects(filtered);
+  };
+
+  useEffect(() => {
+    applyFilters();
+  }, [filters, subjects]);
 
   const resetForm = () => {
     setFormData({
@@ -110,6 +144,66 @@ function SubjectManagement() {
             >
               Add New Subject
             </button>
+          </div>
+
+          {/* Filters */}
+          <div className="bg-white rounded-lg shadow p-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              <select
+                value={filters.department}
+                onChange={(e) => setFilters({...filters, department: e.target.value})}
+                className="p-2 border rounded-lg"
+              >
+                <option value="">All Departments</option>
+                {departments.map((dept) => (
+                  <option key={dept._id} value={dept.name}>
+                    {dept.code}
+                  </option>
+                ))}
+              </select>
+              
+              <select
+                value={filters.facultyId}
+                onChange={(e) => setFilters({...filters, facultyId: e.target.value})}
+                className="p-2 border rounded-lg"
+              >
+                <option value="">All Faculty</option>
+                {faculty.map((f) => (
+                  <option key={f._id} value={f._id}>
+                    {f.name}
+                  </option>
+                ))}
+              </select>
+              
+              <select
+                value={filters.semester}
+                onChange={(e) => setFilters({...filters, semester: e.target.value})}
+                className="p-2 border rounded-lg"
+              >
+                <option value="">All Semesters</option>
+                {[1,2,3,4,5,6,7,8].map((sem) => (
+                  <option key={sem} value={sem}>Sem {sem}</option>
+                ))}
+              </select>
+              
+              <select
+                value={filters.credits}
+                onChange={(e) => setFilters({...filters, credits: e.target.value})}
+                className="p-2 border rounded-lg"
+              >
+                <option value="">All Credits</option>
+                {[3,4,5].map((credit) => (
+                  <option key={credit} value={credit}>{credit} Credits</option>
+                ))}
+              </select>
+              
+              <button
+                onClick={() => setFilters({ department: '', facultyId: '', semester: '', credits: '' })}
+                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Clear Filters
+              </button>
+            </div>
           </div>
 
           {/* Subject Form Modal */}
@@ -225,7 +319,7 @@ function SubjectManagement() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {subjects.map((subject) => (
+                {filteredSubjects.map((subject) => (
                   <tr key={subject._id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
@@ -270,7 +364,7 @@ function SubjectManagement() {
             </table>
           </div>
 
-          {subjects.length === 0 && !loading && (
+          {filteredSubjects.length === 0 && !loading && (
             <div className="text-center py-12">
               <div className="text-gray-400 text-6xl mb-4">📚</div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">No subjects found</h3>

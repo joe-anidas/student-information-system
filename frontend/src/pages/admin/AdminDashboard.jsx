@@ -168,28 +168,7 @@ function AdminDashboard() {
             ))}
           </div>
 
-          {/* Department Distribution Chart */}
-          {stats && stats.departmentStats && stats.departmentStats.length > 0 && (
-            <div className="mt-8 bg-white rounded-xl shadow-lg p-6 border border-gray-100">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Department Distribution</h3>
-              <div className="space-y-3">
-                {stats.departmentStats.map((dept, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-700">{dept._id}</span>
-                    <div className="flex items-center">
-                      <div className="w-32 bg-gray-200 rounded-full h-2 mr-3">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
-                          style={{ width: `${(dept.count / Math.max(...stats.departmentStats.map(d => d.count))) * 100}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-sm font-medium text-gray-900 w-8">{dept.count}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+    
         </div>
       </div>
     </div>
