@@ -41,9 +41,8 @@ const userSchema = new mongoose.Schema({
     required: function() {
       return this.role === 'student'
     },
-    unique: function() {
-      return this.role === 'student'
-    },
+    unique: true,
+    sparse: true,
     trim: true
   },
   subjectsAssigned: [{
@@ -55,18 +54,25 @@ const userSchema = new mongoose.Schema({
     required: function() {
       return this.role === 'student'
     },
-    unique: function() {
-      return this.role === 'student'
-    }
+    unique: true,
+    sparse: true
   },
   facultyId: {
     type: String,
     required: function() {
       return this.role === 'faculty'
     },
-    unique: function() {
-      return this.role === 'faculty'
-    }
+    unique: true,
+    sparse: true
+  },
+  isHOD: {
+    type: Boolean,
+    default: false
+  },
+  classAdvisorFor: {
+    department: String,
+    year: Number,
+    semester: Number
   },
   isActive: {
     type: Boolean,

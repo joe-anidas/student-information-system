@@ -6,7 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "create-admin": "node createAdmin.js",
-    "create-test-users": "node createTestUsers.js"
+    "create-test-users": "node createTestUsers.js",
+    "create-sample-data": "node createSampleData.js",
+    "create-comprehensive-data": "node createComprehensiveData.js"
   },
   "keywords": [],
   "author": "",

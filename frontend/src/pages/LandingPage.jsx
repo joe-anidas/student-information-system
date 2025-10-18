@@ -50,7 +50,7 @@ function LandingPage() {
               <div className="flex-shrink-0 flex items-center">
                 <img 
                   className="h-10 w-10" 
-                  src="/logo.png" 
+                  src="/head_logo.png" 
                   alt="AcademIQ Logo"
                   onError={(e) => {
                     e.target.style.display = 'none';
@@ -65,7 +65,6 @@ function LandingPage() {
                 <h1 className="text-2xl font-bold" style={{ color: '#183e77' }}>
                   AcademIQ
                 </h1>
-                <p className="text-xs text-gray-500 uppercase tracking-wider">Student Information System</p>
               </div>
             </div>
 
@@ -141,7 +140,7 @@ function LandingPage() {
               <div className="text-5xl mb-6 text-center">👨‍💼</div>
               <h3 className="text-2xl font-bold text-blue-900 mb-4 text-center">Admin Dashboard</h3>
               <p className="text-gray-700 text-center leading-relaxed mb-6">
-                Complete control over the system. Manage users, subjects, departments, attendance, and view comprehensive analytics.
+                Complete control over the system. Manage users, courses, departments, attendance, and view comprehensive analytics.
               </p>
               <ul className="text-sm text-gray-600 space-y-2">
                 <li>• User management and registration</li>
@@ -155,7 +154,7 @@ function LandingPage() {
               <div className="text-5xl mb-6 text-center">👨‍🏫</div>
               <h3 className="text-2xl font-bold text-green-900 mb-4 text-center">Faculty Portal</h3>
               <p className="text-gray-700 text-center leading-relaxed mb-6">
-                Manage attendance and test/assignment scores for assigned subjects. View department and year-wise student data.
+                Manage attendance and test/assignment scores for assigned courses. View department and year-wise student data.
               </p>
               <ul className="text-sm text-gray-600 space-y-2">
                 <li>• Attendance management</li>
@@ -280,18 +279,18 @@ function LoginForm({ onLogin, loading, error }) {
             🔑 Admin Login (admin@sis.com)
           </button>
           <button
-            onClick={() => handleTestLogin('faculty@sis.com', 'faculty123')}
+            onClick={() => handleTestLogin('ramesh11.cse@sis.com', 'faculty123')}
             disabled={loading}
             className="w-full bg-green-100 hover:bg-green-200 text-green-800 py-2 px-4 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
           >
-            👨‍🏫 Faculty Login (faculty@sis.com)
+            👨‍🏫 Faculty Login (ramesh11.cse@sis.com)
           </button>
           <button
-            onClick={() => handleTestLogin('student@sis.com', 'student123')}
+            onClick={() => handleTestLogin('student1y1s1.24cse@sis.com', 'student123')}
             disabled={loading}
             className="w-full bg-blue-100 hover:bg-blue-200 text-blue-800 py-2 px-4 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
           >
-            👨‍🎓 Student Login (student@sis.com)
+            👨‍🎓 Student Login (student1y1s1.24cse@sis.com)
           </button>
         </div>
         <p className="text-xs text-gray-500 text-center italic">

@@ -6,13 +6,43 @@ AcademIQ is a **full-stack** Student Information System built using **MongoDB, E
 ---
 
 ## Features
+
+### 🔐 Authentication & Security
 - **JWT Authentication**: Secure token-based authentication system
 - **Role-based Access Control**: Different permissions for admin, faculty, and students
-- **Admin Only Registration**: Only admin users can register new users
 - **Protected Routes**: All routes require authentication
-- **Admin:** View reports, add/delete students, faculty, and courses, register new users
-- **Faculty:** Add/delete reports and courses, view student information
-- **Student:** View their own information, courses, and reports
+- **Password Hashing**: Secure password storage with bcrypt
+- **Admin Only Registration**: Only admin users can register new users
+
+### 👨💼 Admin Features
+- **User Management**: Complete CRUD operations for students, faculty, and admin accounts
+- **Department Management**: Create and manage academic departments with semester structure
+- **Subject Management**: Create subjects and assign them to faculty members
+- **Attendance Oversight**: View and manage all attendance records across the system
+- **Score Management**: Access and manage all test scores and academic performance data
+- **Analytics Dashboard**: Comprehensive system analytics with charts and statistics
+- **Reports Generation**: Generate detailed reports on attendance, performance, and system usage
+
+### 👨🏫 Faculty Features
+- **Attendance Management**: Mark daily attendance for assigned subjects with real-time statistics
+- **Score Entry**: Enter and manage test scores, assignments, and grades with automatic grade calculation
+- **Student Monitoring**: View student information and academic progress for assigned classes
+- **Course Management**: Manage assigned courses and subject details
+- **Performance Reports**: Generate and view reports for student performance in their subjects
+
+### 👨🎓 Student Features
+- **Profile Management**: View and edit personal information and academic details
+- **Course Information**: Access information about enrolled courses and subjects
+- **Attendance Tracking**: View personal attendance records and statistics
+- **Grade Monitoring**: Access personal test scores, grades, and academic performance
+- **Progress Reports**: View comprehensive academic progress and performance reports
+
+### 📊 Analytics & Reporting
+- **Dashboard Statistics**: Real-time system statistics and key performance indicators
+- **Attendance Analytics**: Department-wise and subject-wise attendance analysis
+- **Performance Metrics**: Grade distribution, average scores, and academic performance trends
+- **Visual Charts**: Interactive charts and graphs for data visualization
+- **Export Capabilities**: Generate and export reports in various formats
 
 ---
 
@@ -37,7 +67,7 @@ Create a `.env` file in the `backend` directory with the following variables:
 PORT=3000
 
 # Database Configuration
-MONGO_URI=mongodb+srv://joe:joe@joe.wv0k6.mongodb.net/?retryWrites=true&w=majority&appName=JOE
+MONGO_URI=mongodb://localhost:27017/sis
 
 # JWT Configuration
 JWT_SECRET=jwt-secret-change-me-in-production
@@ -60,6 +90,18 @@ This creates an admin user with:
 - Email: `admin@sis.com`
 - Password: `admin123`
 - Role: `admin`
+
+#### Create Sample Data (Optional)
+```bash
+npm run create-sample-data
+```
+This creates comprehensive sample data including:
+- 3 departments (CSE, ECE, MECH)
+- 4 faculty members
+- 6 students
+- 6 subjects with faculty assignments
+- Sample attendance records
+- Sample test scores and grades
 
 #### Start Backend Server
 ```bash
@@ -145,9 +187,21 @@ cd frontend
 npm run dev
 ```
 
+### **Create Sample Data (Optional)**
+```bash
+cd backend
+npm run create-sample-data
+```
+
 ### **Access the Application**
 - Frontend: `http://localhost:5173`
 - Backend API: `http://localhost:3000`
+
+### **Test Credentials**
+After running the sample data script:
+- **Admin**: `admin@sis.com` / `admin123`
+- **Faculty**: `faculty@sis.com` / `faculty123`
+- **Student**: `student@sis.com` / `student123`
 
 ---
 
@@ -156,27 +210,31 @@ npm run dev
 ### Admin
 - **Login**: `admin@sis.com` / `admin123`
 - **Permissions**: 
-  - Register new users (students, faculty, other admins)
-  - View, add, edit, delete all students
-  - View, add, edit, delete all faculty
-  - View, add, edit, delete all courses
-  - View, add, edit, delete all marks
-  - View all reports
+  - **User Management**: Create, edit, delete students, faculty, and admin accounts
+  - **Department Management**: Create and manage academic departments with semester structure
+  - **Subject Management**: Create subjects and assign them to faculty members
+  - **Attendance Management**: View and manage all attendance records
+  - **Score Management**: View and manage all test scores and grades
+  - **Analytics & Reports**: Access comprehensive system analytics and performance reports
+  - **System Administration**: Full access to all system features
 
 ### Faculty
+- **Login**: `faculty@sis.com` / `faculty123`
 - **Permissions**:
-  - View all students
-  - View own faculty profile
-  - View, add, edit, delete courses
-  - View, add, edit, delete marks
-  - View reports
+  - **Attendance Management**: Mark and manage attendance for assigned subjects
+  - **Score Management**: Enter and manage test scores for assigned subjects
+  - **Student Information**: View student details for their classes
+  - **Course Management**: Manage assigned courses and subjects
+  - **Reports**: View attendance and performance reports for their subjects
 
 ### Student
+- **Login**: `student@sis.com` / `student123`
 - **Permissions**:
-  - View own student profile
-  - View all courses
-  - View own marks only
-  - View own reports
+  - **Profile Management**: View and edit personal information
+  - **Course Information**: View enrolled courses and subjects
+  - **Attendance Records**: View personal attendance records
+  - **Academic Performance**: View personal test scores and grades
+  - **Reports**: View personal academic reports and progress
 
 ---
 
@@ -184,31 +242,65 @@ npm run dev
 ```
 /student-information-system
 │── /backend (Backend - Express, MongoDB, JWT)
-│   ├── config/       # Configuration files
-│   │   ├── env.js    # Environment variables
-│   │   └── db.js     # Database connection
-│   ├── controllers/  # Authentication controllers
-│   ├── middleware/   # JWT authentication & validation
-│   ├── models/       # User model with roles
-│   ├── routes/       # Protected API routes
-│   ├── .env          # Environment variables
-│   ├── createAdmin.js # Admin user creation script
-│   └── server.js     # Entry point
+│   ├── config/           # Configuration files
+│   │   ├── env.js        # Environment variables
+│   │   └── db.js         # Database connection
+│   ├── controllers/      # Business logic controllers
+│   │   └── authController.js # Authentication logic
+│   ├── middleware/       # JWT authentication & validation
+│   │   └── auth.js       # JWT middleware
+│   ├── models/           # MongoDB schemas
+│   │   ├── User.js       # User model with roles
+│   │   ├── Department.js # Department model
+│   │   ├── Subject.js    # Subject model
+│   │   ├── Attendance.js # Attendance model
+│   │   └── Score.js      # Score/Grade model
+│   ├── routes/           # API route definitions
+│   │   ├── authRoutes.js # Authentication routes
+│   │   ├── users.js      # User management routes
+│   │   ├── departments.js # Department routes
+│   │   ├── subjects.js   # Subject routes
+│   │   ├── attendance.js # Attendance routes
+│   │   └── scores.js     # Score routes
+│   ├── .env              # Environment variables
+│   ├── createAdmin.js    # Admin user creation script
+│   ├── createSampleData.js # Sample data generation
+│   └── server.js         # Entry point
 │
-│── /frontend (Frontend - React, Vite, JWT)
+│── /frontend (Frontend - React, Vite, Tailwind CSS)
 │   ├── src/
-│   │   ├── components/ # ProtectedRoute component
-│   │   ├── lib/        # API utilities
-│   │   ├── admin/      # Admin dashboard & components
-│   │   ├── faculty/    # Faculty dashboard & components
-│   │   ├── student/    # Student dashboard & components
-│   │   ├── login/      # JWT login component
-│   │   └── App.jsx     # Protected route structure
-│   ├── .env            # Environment variables
+│   │   ├── components/   # Reusable components
+│   │   │   ├── Navbar.jsx # Navigation component
+│   │   │   ├── ProtectedRoute.jsx # Route protection
+│   │   │   ├── DataTable.jsx # Data display component
+│   │   │   └── Form.jsx  # Form components
+│   │   ├── lib/          # Utility libraries
+│   │   │   └── api.js    # API client and utilities
+│   │   ├── pages/        # Page components
+│   │   │   ├── admin/    # Admin pages
+│   │   │   │   ├── AdminDashboard.jsx
+│   │   │   │   ├── UserManagement.jsx
+│   │   │   │   ├── DepartmentManagement.jsx
+│   │   │   │   ├── SubjectManagement.jsx
+│   │   │   │   └── AnalyticsReports.jsx
+│   │   │   ├── faculty/  # Faculty pages
+│   │   │   │   ├── FacultyDashboard.jsx
+│   │   │   │   ├── AttendanceManagement.jsx
+│   │   │   │   └── ScoreManagement.jsx
+│   │   │   ├── student/  # Student pages
+│   │   │   │   ├── StudentDashboard.jsx
+│   │   │   │   ├── StudentView.jsx
+│   │   │   │   ├── CourseView.jsx
+│   │   │   │   └── ReportView.jsx
+│   │   │   └── auth/     # Authentication pages
+│   │   │       └── LogoutLayout.jsx
+│   │   ├── App.jsx       # Main app component with routing
+│   │   └── main.jsx      # App entry point
+│   ├── .env              # Environment variables
 │   └── package.json
 │
-│── JWT_SETUP.md        # Detailed JWT setup guide
-│── README.md           # This file
+│── DOC.md                # Detailed project documentation
+│── README.md             # This file
 ```
 
 ---
@@ -220,33 +312,43 @@ npm run dev
 - `POST /auth/register` - Register new user (admin only)
 - `GET /auth/profile` - Get user profile
 
-### Students (Protected)
-- `GET /students` - Get all students (admin, faculty)
-- `GET /students/:id` - Get specific student
-- `POST /students` - Create student (admin only)
-- `PUT /students/:id` - Update student (admin only)
-- `DELETE /students/:id` - Delete student (admin only)
+### Users (Protected)
+- `GET /users` - Get all users with filtering (admin only)
+- `GET /users/:id` - Get specific user
+- `PUT /users/:id` - Update user (admin or own profile)
+- `DELETE /users/:id` - Delete user (admin only)
+- `GET /users/stats/dashboard` - Get dashboard statistics (admin only)
 
-### Faculty (Protected)
-- `GET /faculty` - Get all faculty (admin only)
-- `GET /faculty/:id` - Get specific faculty
-- `POST /faculty` - Create faculty (admin only)
-- `PUT /faculty/:id` - Update faculty (admin only)
-- `DELETE /faculty/:id` - Delete faculty (admin only)
+### Departments (Protected)
+- `GET /departments` - Get all departments
+- `GET /departments/:id` - Get specific department
+- `POST /departments` - Create department (admin only)
+- `PUT /departments/:id` - Update department (admin only)
+- `DELETE /departments/:id` - Delete department (admin only)
 
-### Courses (Protected)
-- `GET /courses` - Get all courses (all authenticated users)
-- `GET /courses/:id` - Get specific course
-- `POST /courses` - Create course (admin, faculty)
-- `PUT /courses/:id` - Update course (admin, faculty)
-- `DELETE /courses/:id` - Delete course (admin, faculty)
+### Subjects (Protected)
+- `GET /subjects` - Get all subjects with filtering
+- `GET /subjects/:id` - Get specific subject
+- `POST /subjects` - Create subject (admin only)
+- `PUT /subjects/:id` - Update subject (admin only)
+- `DELETE /subjects/:id` - Delete subject (admin only)
 
-### Marks (Protected)
-- `GET /marks` - Get marks (students see only their own)
-- `GET /marks/:id` - Get specific marks
-- `POST /marks` - Create marks (admin, faculty)
-- `PUT /marks/:id` - Update marks (admin, faculty)
-- `DELETE /marks/:id` - Delete marks (admin, faculty)
+### Attendance (Protected)
+- `GET /attendance` - Get attendance records (role-based filtering)
+- `GET /attendance/:id` - Get specific attendance record
+- `POST /attendance` - Mark attendance (admin, faculty)
+- `PUT /attendance/:id` - Update attendance (admin, faculty)
+- `DELETE /attendance/:id` - Delete attendance (admin, faculty)
+- `GET /attendance/stats/summary` - Get attendance statistics
+
+### Scores (Protected)
+- `GET /scores` - Get score records (role-based filtering)
+- `GET /scores/:id` - Get specific score record
+- `POST /scores` - Add score (admin, faculty)
+- `PUT /scores/:id` - Update score (admin, faculty)
+- `DELETE /scores/:id` - Delete score (admin, faculty)
+- `GET /scores/stats/summary` - Get score statistics
+- `GET /scores/student/:studentId/performance` - Get student performance
 
 ---
 

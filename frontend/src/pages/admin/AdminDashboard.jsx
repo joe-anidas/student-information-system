@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
-import { dataAPI } from '../../lib/api';
+import { dataAPI, getUser } from '../../lib/api';
 
 function AdminDashboard() {
   const navigate = useNavigate();
+  const user = getUser();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -89,11 +90,11 @@ function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="pt-20 p-8">
+      <div className="pt-24 p-8">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
-            <p className="text-gray-600 text-lg">Manage your AcademIQ Student Information System</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome, {user?.name}</h1>
+            <p className="text-gray-600 text-lg">Administrator Dashboard - Manage your AcademIQ Student Information System</p>
           </div>
 
           {/* Quick Stats Overview */}

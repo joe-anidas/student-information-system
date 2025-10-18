@@ -1,17 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
+import { getUser } from '../../lib/api';
 
 function Student() {
   const navigate = useNavigate();
+  const user = getUser();
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="pt-16 p-8">
+      <div className="pt-24 p-8">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Student Dashboard</h1>
-            <p className="text-gray-600 text-lg">View your academic progress, courses, and reports</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome, {user?.name}</h1>
+            <p className="text-gray-600 text-lg">Student Dashboard - View your academic progress, courses, and reports</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

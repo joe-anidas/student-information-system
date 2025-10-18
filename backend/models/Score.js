@@ -30,14 +30,12 @@ const scoreSchema = new mongoose.Schema({
   },
   percentage: {
     type: Number,
-    required: [true, 'Percentage is required'],
     min: 0,
     max: 100
   },
   grade: {
     type: String,
-    enum: ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F'],
-    required: [true, 'Grade is required']
+    enum: ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D', 'F']
   },
   remarks: {
     type: String,

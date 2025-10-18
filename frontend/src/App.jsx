@@ -6,6 +6,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 // Admin Components
 import AdminDashboard from './pages/admin/AdminDashboard';
 import UserManagement from './pages/admin/UserManagement';
+import DepartmentManagement from './pages/admin/DepartmentManagement';
+import SubjectManagement from './pages/admin/SubjectManagement';
+import AnalyticsReports from './pages/admin/AnalyticsReports';
 import FacultyInfo from './pages/admin/FacultyInfo';
 import StudentInfo from './pages/admin/StudentInfo';
 import CourseInfo from './pages/admin/CourseInfo';
@@ -13,6 +16,8 @@ import ReportView from './pages/admin/ReportView';
 
 // Faculty Components
 import FacultyDashboard from './pages/faculty/FacultyDashboard';
+import AttendanceManagement from './pages/faculty/AttendanceManagement';
+import ScoreManagement from './pages/faculty/ScoreManagement';
 import ReportInfo from './pages/faculty/ReportInfo';
 import CourseDetails from './pages/faculty/CourseDetails';
 import StudentInfoView from './pages/faculty/StudentInfoView';
@@ -39,6 +44,31 @@ function App() {
         <Route path="/admin/users" element={
           <ProtectedRoute requiredRole="admin">
             <UserManagement />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/departments" element={
+          <ProtectedRoute requiredRole="admin">
+            <DepartmentManagement />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/subjects" element={
+          <ProtectedRoute requiredRole="admin">
+            <SubjectManagement />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/attendance" element={
+          <ProtectedRoute requiredRole="admin">
+            <AttendanceManagement />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/scores" element={
+          <ProtectedRoute requiredRole="admin">
+            <ScoreManagement />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/reports" element={
+          <ProtectedRoute requiredRole="admin">
+            <AnalyticsReports />
           </ProtectedRoute>
         } />
         <Route path="/student-info" element={
@@ -81,6 +111,16 @@ function App() {
         <Route path="/course-details" element={
           <ProtectedRoute requiredRole="faculty">
             <CourseDetails />
+          </ProtectedRoute>
+        } />
+        <Route path="/faculty/attendance" element={
+          <ProtectedRoute requiredRole="faculty">
+            <AttendanceManagement />
+          </ProtectedRoute>
+        } />
+        <Route path="/faculty/scores" element={
+          <ProtectedRoute requiredRole="faculty">
+            <ScoreManagement />
           </ProtectedRoute>
         } />
 

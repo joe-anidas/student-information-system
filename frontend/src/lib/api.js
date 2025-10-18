@@ -93,9 +93,12 @@ export const authAPI = {
 // Data API calls
 export const dataAPI = {
   // Users (Students, Faculty, Admins)
-  getUsers: (params = '') => apiRequest(`/users${params ? '?' + params : ''}`),
+  getUsers: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`/users${queryString ? '?' + queryString : ''}`);
+  },
   getUser: (id) => apiRequest(`/users/${id}`),
-  createUser: (user) => apiRequest('/users', {
+  createUser: (user) => apiRequest('/auth/register', {
     method: 'POST',
     body: JSON.stringify(user),
   }),
@@ -121,7 +124,10 @@ export const dataAPI = {
   getDepartmentSubjects: (id) => apiRequest(`/departments/${id}/subjects`),
 
   // Subjects
-  getSubjects: (params = '') => apiRequest(`/subjects${params ? '?' + params : ''}`),
+  getSubjects: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`/subjects${queryString ? '?' + queryString : ''}`);
+  },
   getSubject: (id) => apiRequest(`/subjects/${id}`),
   createSubject: (subject) => apiRequest('/subjects', {
     method: 'POST',
@@ -135,8 +141,15 @@ export const dataAPI = {
   getFacultySubjects: (facultyId) => apiRequest(`/subjects/faculty/${facultyId}`),
 
   // Attendance
-  getAttendance: (params = '') => apiRequest(`/attendance${params ? '?' + params : ''}`),
+  getAttendance: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`/attendance${queryString ? '?' + queryString : ''}`);
+  },
   getAttendanceRecord: (id) => apiRequest(`/attendance/${id}`),
+  createAttendance: (attendance) => apiRequest('/attendance', {
+    method: 'POST',
+    body: JSON.stringify(attendance),
+  }),
   markAttendance: (attendance) => apiRequest('/attendance', {
     method: 'POST',
     body: JSON.stringify(attendance),
@@ -149,8 +162,15 @@ export const dataAPI = {
   getAttendanceStats: (params = '') => apiRequest(`/attendance/stats/summary${params ? '?' + params : ''}`),
 
   // Scores
-  getScores: (params = '') => apiRequest(`/scores${params ? '?' + params : ''}`),
+  getScores: (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return apiRequest(`/scores${queryString ? '?' + queryString : ''}`);
+  },
   getScore: (id) => apiRequest(`/scores/${id}`),
+  createScore: (score) => apiRequest('/scores', {
+    method: 'POST',
+    body: JSON.stringify(score),
+  }),
   addScore: (score) => apiRequest('/scores', {
     method: 'POST',
     body: JSON.stringify(score),
