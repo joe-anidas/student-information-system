@@ -13,20 +13,42 @@ const scoreSchema = new mongoose.Schema({
   },
   testType: {
     type: String,
-    enum: ['Test1', 'Test2', 'Assignment', 'Quiz', 'Project', 'Final'],
+    enum: ['Test1', 'Test2', 'Final'],
     required: [true, 'Test type is required']
   },
   marks: {
     type: Number,
     required: [true, 'Marks are required'],
     min: 0,
-    max: 100
+    validate: {
+      validator: function(value) {
+        // Test1 and Test2 max 20, Final max 60
+        if (this.testType === 'Test1' || this.testType === 'Test2') {
+          return value <= 20;
+        } else if (this.testType === 'Final') {
+          return value <= 60;
+        }
+        return value <= 100;
+      },
+      message: 'Marks exceed maximum allowed for this test type'
+    }
   },
   maxMarks: {
     type: Number,
     required: [true, 'Maximum marks are required'],
     min: 1,
-    max: 100
+    validate: {
+      validator: function(value) {
+        // Test1 and Test2 should be 20, Final should be 60
+        if (this.testType === 'Test1' || this.testType === 'Test2') {
+          return value === 20;
+        } else if (this.testType === 'Final') {
+          return value === 60;
+        }
+        return value <= 100;
+      },
+      message: 'Invalid maximum marks for this test type'
+    }
   },
   percentage: {
     type: Number,

@@ -34,6 +34,14 @@ function AdminDashboard() {
       stats: stats ? `${stats.totalStudents + stats.totalFaculty + stats.totalAdmins} Total Users` : 'Loading...'
     },
     {
+      title: 'Student Info Management',
+      description: 'View and manage detailed student information',
+      icon: '👨‍🎓',
+      color: 'cyan',
+      onClick: () => navigate('/admin/student-management'),
+      stats: stats ? `${stats.totalStudents} Students` : 'Loading...'
+    },
+    {
       title: 'Department Management',
       description: 'Create and manage academic departments',
       icon: '🏢',
@@ -64,20 +72,13 @@ function AdminDashboard() {
       color: 'red',
       onClick: () => navigate('/admin/scores'),
       stats: 'Academic Scores'
-    },
-    {
-      title: 'Analytics & Reports',
-      description: 'View comprehensive system analytics',
-      icon: '📈',
-      color: 'indigo',
-      onClick: () => navigate('/admin/reports'),
-      stats: 'System Analytics'
     }
   ];
 
   const getColorClasses = (color) => {
     const colors = {
       blue: 'bg-blue-100 group-hover:bg-blue-200 text-blue-600',
+      cyan: 'bg-cyan-100 group-hover:bg-cyan-200 text-cyan-600',
       green: 'bg-green-100 group-hover:bg-green-200 text-green-600',
       purple: 'bg-purple-100 group-hover:bg-purple-200 text-purple-600',
       orange: 'bg-orange-100 group-hover:bg-orange-200 text-orange-600',

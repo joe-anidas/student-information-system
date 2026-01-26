@@ -8,7 +8,8 @@
     "create-admin": "node createAdmin.js",
     "create-test-users": "node createTestUsers.js",
     "create-sample-data": "node createSampleData.js",
-    "create-comprehensive-data": "node createComprehensiveData.js"
+    "create-comprehensive-data": "node createComprehensiveData.js",
+    "seed": "node seedDatabase.js"
   },
   "keywords": [],
   "author": "",

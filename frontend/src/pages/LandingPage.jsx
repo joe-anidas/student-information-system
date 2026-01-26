@@ -279,22 +279,22 @@ function LoginForm({ onLogin, loading, error }) {
             🔑 Admin Login (admin@sis.com)
           </button>
           <button
-            onClick={() => handleTestLogin('ramesh11.cse@sis.com', 'faculty123')}
+            onClick={() => handleTestLogin('cse.faculty1@sis.com', 'password123')}
             disabled={loading}
             className="w-full bg-green-100 hover:bg-green-200 text-green-800 py-2 px-4 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
           >
-            👨‍🏫 Faculty Login (ramesh11.cse@sis.com)
+            👨‍🏫 Faculty Login (cse.faculty1@sis.com)
           </button>
           <button
-            onClick={() => handleTestLogin('student1y1s1.24cse@sis.com', 'student123')}
+            onClick={() => handleTestLogin('cse.student.y1.1@sis.com', 'password123')}
             disabled={loading}
             className="w-full bg-blue-100 hover:bg-blue-200 text-blue-800 py-2 px-4 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
           >
-            👨‍🎓 Student Login (student1y1s1.24cse@sis.com)
+            👨‍🎓 Student Login (cse.student.y1.1@sis.com)
           </button>
         </div>
         <p className="text-xs text-gray-500 text-center italic">
-          Note: These are demo credentials for testing
+          Note: These are demo credentials for testing. Password: password123
         </p>
       </div>
     </div>
